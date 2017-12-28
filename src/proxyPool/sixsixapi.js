@@ -9,7 +9,7 @@ const { headers } = require('./config');
 
 const getProxyList = () => {
   const apiUrl = 'http://www.66ip.cn/mo.php?sxb=&tqsl=100&port=&export=&ktip=&sxa=&submit=%CC%E1++%C8%A1&textarea=';
-  const apiAnonyUrl = 'http://www.66ip.cn/nmtq.php?getnum=100&isp=0&anonymoustype=0&start=&ports=&export=&ipaddress=&area=0&proxytype=2&api=66ip';
+  const apiAnonyUrl = 'http://www.66ip.cn/nmtq.php?getnum=300&isp=0&anonymoustype=0&start=&ports=&export=&ipaddress=&area=0&proxytype=2&api=66ip';
 
   return new Promise((resolve, reject) => {
     let apiLst = [], apiAnonyList = [];
@@ -49,9 +49,5 @@ const getProxyList = () => {
       })
   })
 }
-
-// getProxyList().then(res => {
-//   console.log(res);
-// })
 
 module.exports = getProxyList;

@@ -1,44 +1,46 @@
-const request = require('../helper/request');
+const superagent = require('../helper/request');
 const cheerio = require('cheerio');
+const async = require('async');
+
 const { headers } = require('./config');
+const { getDelay } = require('../helper/utils');
 
 const getProxyList = require('./sixsixapi');
+const validateUrl = 'http://www.qq.com/';
+let currencyCount = 0;
 
-const validate = (ipList) => {
-  ipList.forEach(url => {
-    console.log(`testing ${url}`);
+// 验证抓取到的代理是否可用
+const validate = (url, callback) => {
+  const delay = getDelay();
+  currencyCount++;
+  superagent
+    .get(validateUrl)
+    .set(headers)
+    .proxy(`http://${url}`)
+    .charset('gbk')
+    .end((err, res) => {
+      if (err) {
+        return console.log('验证失败', url);
+      }
 
-    const validateUrl = 'http://ip.chinaz.com/getip.aspx';
-    const proxyUrl = `http://${url}`;
+      const $ = cheerio.load(res.text);
+      if($('#guess').text() == 'WWWQQCOM') {
+        console.log(`验证成功 ==> http://${url}`)
+      }
 
-    setTimeout(() => {
-      request
-      .get(validateUrl)
-      .proxy(proxyUrl)
-      .charset('gbk')
-      .end((err, res) => {
-        try {
-          if(err) {
-            throw err;
-          }
+      console.log('现在并发数是：', currencyCount, '，正在抓取的是：', url, '，耗时', delay, '毫秒' )
+    })
 
-          const $ = cheerio.load(res.text);
-          const response = JSON.parse($('body').text());
-          
-
-          if(response.address) {
-            console.log(`验证成功 ==> ${response.address}`)
-          }
-
-        } catch (error) {
-          console.log(error)
-        }
-      })
-    }, 500);
-  })
+  setTimeout(() => {
+    currencyCount--;
+    callback(null, url);
+  }, delay);
 }
 
 getProxyList().then(ipList => {
-  console.log(ipList);
-  validate(ipList);
+  async.mapLimit(ipList, 2, (url, callback) => {
+    validate(url, callback);
+  }, (err, result) => {
+    console.log('验证结束！')
+  })
 })

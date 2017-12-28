@@ -69,9 +69,4 @@ const getProxyList = () => {
   })
 }
 
-// getProxyList().then(res => {
-//   console.log(res);
-//   console.log(res.length);
-// })
-
 module.exports = getProxyList;
