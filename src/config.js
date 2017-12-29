@@ -14,9 +14,9 @@ const headers = {
 
 const dbConfig = {
   proxyConfig: {
-    DB_NAME: '',
-    DB_PATH: path.resolve(__dirname, 'db/proxyPool.sqlite'),
-    LOG_PATH_NAME: path.resolve(__dirname, 'log/proxyPool.log')
+    DB_NAME: 'proxyPool',
+    DB_PATH: '../../db/proxyPool.sqlite',
+    LOG_PATH_NAME: '../../log/proxyPool.log'
   },
   crawlerConfig: {
     DB_NAME: '',

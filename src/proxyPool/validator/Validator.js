@@ -15,7 +15,7 @@ let currencyCount = 0;
 class Validator {
 
   // 验证抓取到的代理是否可用
-  static validate(url, callback) {
+  static validate(url, callback, op) {
     const delay = getDelay();
     currencyCount++;
     superagent
@@ -31,6 +31,7 @@ class Validator {
         const $ = cheerio.load(res.text);
         if($('#guess').text() == 'WWWQQCOM') {
           console.log(`验证成功 ==> http://${url}`)
+          op(url);
         }
   
         console.log('现在并发数是', currencyCount, '正在抓取的是：', url, '耗时', delay, '毫秒' )
@@ -42,9 +43,9 @@ class Validator {
     }, delay);
   }
 
-  static validator(ipList) {
-    async.mapLimit(ipList, 5, (url, callback) => {
-      Validator.validate(url, callback);
+  static validator(ipList, op) {
+    async.mapLimit(ipList, 20, (url, callback) => {
+      Validator.validate(url, callback, op);
     }, (err, result) => {
       console.log('验证结束！')
     })

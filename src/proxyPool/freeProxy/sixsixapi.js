@@ -15,7 +15,6 @@ const getProxyList = () => {
     console.log('开始抓取66免费代理!')
     let apiLst = [], apiAnonyList = [];
     
-
     request
       .get(apiUrl)
       .charset('gbk')

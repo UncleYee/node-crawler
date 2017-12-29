@@ -56,7 +56,7 @@ const getProxyList = () => {
             } else {
               resolve(proxyList);
             }
-          }, 1000);
+          }, 500);
         } catch (err) {
           reject(err);
         }

@@ -7,6 +7,7 @@ const getXMProxy = require('./freeProxy/xiaoma');
 const getXCProcxy = require('./freeProxy/xici');
 
 const Validator = require('./validator/Validator');
+const ProxyHandle = require('./proxyHandle/ProxyHandle');
 
 const getAllProxyList = () => {
   return new Promise(async (resolve, reject) => {
@@ -30,5 +31,5 @@ const getAllProxyList = () => {
 }
 
 getAllProxyList().then(list => {
-  Validator.validator(list);
+  Validator.validator(list, ProxyHandle.insert);
 })
