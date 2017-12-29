@@ -2,17 +2,17 @@
  * 小马免费代理
  * @author: UncleYee
  */
-const request = require('../helper/request');
+const request = require('../../helper/request');
 const cheerio = require('cheerio');
 
-const { headers } = require('./config');
+const { headers } = require('../../config');
 
 const getProxyList = () => {
   // 免费代理链接
   const freeProxyUrl = 'http://www.yun-daili.com/free.asp';
 
   return new Promise((resolve, reject) => {
-    console.log('开始抓取小马免费代理!')
+    console.log('开始抓取小马免费代理!');
 
     const proxyList = [];
     let flag = 1;
@@ -23,10 +23,14 @@ const getProxyList = () => {
       .get(url)
       .charset('gbk')
       .set(headers)
+      .timeout({
+        response: 5000,
+        deadline: 50000
+      })
       .end((err, res) => {
         try {
           if(err) {
-            throw err
+            return console.log(err);
           }
 
           console.log(`正在抓取：${url}`);

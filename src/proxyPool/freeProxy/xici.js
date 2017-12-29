@@ -2,17 +2,17 @@
  * 西刺免费代理
  * @author: UncleYee
  */
-const request = require('../helper/request');
+const request = require('../../helper/request');
 const cheerio = require('cheerio');
 
-const { headers } = require('./config');
+const { headers } = require('../../config');
 
 const getProxyList = () => {
   // 免费代理链接
   const freeProxyUrl = 'http://www.xicidaili.com/nn/'; // 国内高匿
 
   return new Promise((resolve, reject) => {
-    console.log('开始抓取西刺免费代理!')
+    console.log('开始抓取西刺免费代理!');
 
     const proxyList = [];
     let flag = 1;
@@ -21,16 +21,16 @@ const getProxyList = () => {
     const fetchUrl = (url) => {
       request
       .get(url)
-      // .timeout({
-      //   response: 3000,
-      //   deadline: 50000
-      // })
+      .timeout({
+        response: 3000,
+        deadline: 50000
+      })
       .charset('gbk')
       .set(headers)
       .end((err, res) => {
         try {
           if(err) {
-            throw err
+            return console.log(err);
           }
 
           console.log(`正在抓取：${url}`);
@@ -47,9 +47,9 @@ const getProxyList = () => {
             }
           });
 
-          // 抓取前5页的代理
+          // 抓取前10页的代理
           setTimeout(() => {
-            if(flag<5) {
+            if (flag < 10) {
               flag++;
               url = `${freeProxyUrl}${flag}`;
               fetchUrl(url);
